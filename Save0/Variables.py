@@ -2,10 +2,10 @@ matrix = {}
 unlock_dict = {}
 unlock_dict_to_tuple_list = []
 
-dinossaur = False
+is_dinossaur_hunt = False
 should_not_fertilize=True
 should_not_watering=False
-maze_mode = False
+is_maze_hunt = False
 
 
 

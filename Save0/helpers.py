@@ -1,5 +1,7 @@
+import grid_manipulator
 import rules
 import Variables
+import ghost_drones
 
 def get_random():
 	return Variables.crop_list[random()*len(Variables.crop_list)//1]
@@ -115,7 +117,7 @@ def create_maze():
 		substance = get_world_size() * 2**(num_unlocked(Unlocks.Mazes) - 1)
 		use_item(Items.Weird_Substance, substance)
 
-def treasure_hunt():
+def treasure_catch_and_reset():
 	if get_entity_type() == Entities.Treasure:
 		harvest()
 	if get_entity_type() == Entities.Bush:
@@ -141,4 +143,13 @@ def get_pos_tuple():
 def is_world_mapped():
 	return get_world_size()*get_world_size() == len(matrix)
 
-	
+def can_spawn_drone():
+	return num_drones() != max_drones()
+
+def spawn_drones(quadrant, matrix):
+	spawn_drone(ghost_drones.dance)
+	move(East)
+	if quadrant in rules.crop_configuration:
+		clean_harvest_and_till(can_harvest(), rules.crop_configuration[quadrant], matrix)
+	else:
+		clean_harvest(get_random())

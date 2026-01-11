@@ -14,7 +14,14 @@ harvest_pupkin = False
 def start_variables():
 	unlocks_builder.mount_unlock()
 	unlocks_builder.mount_items_quantity()
-	unlocks_builder.items_quantity
+	unlocks_builder.items_quantity(Variables.unlock_dict)
+
+def treasure_finder():
+	if num_drones() < max_drones():
+				spawn_drone(drone_orders)
+				grid_manipulator.maze_lazy_walker()
+				helpers.treasure_catch_and_reset()
+
 def new_drone_orders():
 	while True:
 		if num_drones() < max_drones():
@@ -25,31 +32,27 @@ def new_drone_orders():
 def drone_orders():
 	quick_print("I am Born", matrix, Variables.unlock_dict)
 	while rules.not_popped:
-		if Variables.maze_mode == True:
-			if num_drones() < max_drones():
-				spawn_drone(drone_orders)
-			grid_manipulator.maze_lazy_walker()
-			helpers.treasure_hunt()
-		else:
+		if Variables.is_maze_hunt:
+			treasure_finder()
+		if (Variables.is_dinossaur_hunt):
+			grid_manipulator.walk_random()
+		if Variables.is_dinossaur_hunt == False and Variables.is_maze_hunt == False:
 			grid_manipulator.populate_matrix(matrix)
-			if (Variables.dinossaur):
-				grid_manipulator.walk_random()
-			else:
-				grid_manipulator.world_walker()
+			grid_manipulator.world_walker()
 			position = helpers.get_pos_tuple()
 			quadrant = square.which_quadrant(position)
 			quick_print(num_drones())
-			if num_drones() != max_drones():
-				spawn_drone(ghost_drones.dance)
-				move(East)
-				if quadrant in rules.crop_configuration:
-					helpers.clean_harvest_and_till(can_harvest(), rules.crop_configuration[quadrant], matrix)
-				else:
-					helpers.clean_harvest(helpers.get_random())
-						
-
-			if quadrant in rules.crop_configuration:
-				helpers.clean_harvest_and_till(can_harvest(), rules.crop_configuration[quadrant], matrix)
-			else:
-				helpers.clean_harvest_and_till(can_harvest(), helpers.get_random(), matrix)
+			if helpers.can_spawn_drone():
+				helpers.spawn_drones(quadrant, matrix)
+				
 		
+		
+		
+		
+					
+
+		if quadrant in rules.crop_configuration:
+			helpers.clean_harvest_and_till(can_harvest(), rules.crop_configuration[quadrant], matrix)
+		else:
+			helpers.clean_harvest_and_till(can_harvest(), helpers.get_random(), matrix)
+	
