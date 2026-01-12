@@ -7,7 +7,8 @@ world_size = get_world_size() - 1
 
 def move_and_update(way):
 	move(way)
-	Variables.came_from = [Variables.oposite[way]]
+
+	# Variables.came_from = [Variables.oposite[way]]
 	#quick_print(Variables.came_from)
 
 def stuck(way):
@@ -79,30 +80,18 @@ def best_way(pos):
 			return East
 		else:
 			return West
-	
-	
 
-def maze_walker(came_from = Variables.came_from):
+def dinossaur_hunter(came_from = Variables.came_from):
 	#quick_print("my last place was: ", came_from)
 	pos = (get_pos_x(),get_pos_y())
 	update_walked_in(pos)
-	where_can_i_go()
+	# where_can_i_go()
 	where_i_go = Variables.walkable
 	for way in where_i_go:
-		if len(where_i_go) == 1:
+		if way == best_way(pos):
 			move_and_update(way)
 			continue
-		elif random()*2//1:
-			continue
-		#elif way == best_way(pos):
-		#	move_and_update(way)
-		#	continue
-		elif way == Variables.came_from[0]:
-			continue
 		#elif way not in Variables.came_from:
-		else:
-			Variables.stuck = 0
-			stuck(way)
 	
 	
 def maze_lazy_walker():
