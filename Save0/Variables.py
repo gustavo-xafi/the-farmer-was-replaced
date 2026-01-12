@@ -44,7 +44,7 @@ hat_list = [
 wrong_path = 0
 
 came_from = [None]
-
+last_path = None
 crops = [Entities.Cactus, Entities.Carrot, Entities.Tree, Entities.Pumpkin]
 
 walked_in = set()
