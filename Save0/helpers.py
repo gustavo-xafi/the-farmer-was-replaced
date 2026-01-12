@@ -73,6 +73,12 @@ def clean_fertilizer(crop):
 		use_item(Items.Fertilizer)
 
 def dinossaur_harvest_and_till():
+	pos = (get_pos_x(), get_pos_y())
+	if pos == Variables.apple_pos and Variables.collected == False:
+		harvest()
+		Variables.collected = True
+		Variables.apple_pos = None
+		return None
 	if can_harvest():
 		harvest()
 		smart_till()

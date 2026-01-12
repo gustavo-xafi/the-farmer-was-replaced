@@ -6,20 +6,21 @@ import Variables
 world_size = get_world_size() - 1
 
 
+def move_random():
+    next_pos = Variables.directions[random() * len(Variables.directions) // 1]
+    move(next_pos)
+
+
 def move_and_update(way):
-    if way == None:
-        return None
-    move(way)
+    if can_move(way) == True:
+        return move(way)
+    elif can_move(Variables.oposite[way]) == True:
+        return move(Variables.oposite[way])
+    else:
+        move_random()
 
     # Variables.came_from = [Variables.oposite[way]]
     # quick_print(Variables.came_from)
-
-
-def stuck(way):
-    if can_move(way) == True:
-        move_and_update(way)
-        return False
-    return True
 
 
 def find_next_pos(pos, way):
@@ -44,7 +45,6 @@ def where_can_i_go():
 
 
 def best_way(pos):
-    quick_print(measure())
     measured = Variables.apple_pos
     if measured == None:
         return None
@@ -100,11 +100,14 @@ def dinossaur_hunter(came_from=Variables.came_from):
 
     if Variables.apple_pos == None:
         Variables.apple_pos = measure()
+    if Variables.collected == True and Variables.apple_pos != None:
+        Variables.collected = False
 
     pos = (get_pos_x(), get_pos_y())
     update_walked_in(pos)
     where_i_go = Variables.walkable
     move_and_update(best_way(pos))
+    quick_print(best_way(pos))
     helpers.dinossaur_harvest_and_till()
 
 
