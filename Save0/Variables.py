@@ -3,12 +3,13 @@ unlock_dict = {}
 unlock_dict_to_tuple_list = []
 
 is_dinossaur_hunt = True
+is_dinossaur_hat_on = False
 should_not_fertilize=True
 should_not_watering=False
 is_maze_hunt = False
 
-
-
+apple_pos = None
+collected = False
 
 crop_list = [
 Entities.Cactus,

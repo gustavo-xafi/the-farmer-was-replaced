@@ -71,6 +71,11 @@ def clean_fertilizer(crop):
 	if crop in rules.crop_to_fertilize:
 		#if (rules.counter % 4):
 		use_item(Items.Fertilizer)
+
+def dinossaur_harvest_and_till():
+	if can_harvest():
+		harvest()
+		smart_till()
 	
 def clean_harvest_and_till(harvestable, crop, matrix):
 	clean_fertilizer(crop)
