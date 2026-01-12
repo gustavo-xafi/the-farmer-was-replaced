@@ -1,4 +1,6 @@
 import main
 
-#spawn_drone(main.drone_orders())
+# spawn_drone(main.drone_orders())
 spawn_drone(main.drone_orders)
+
+#set_world_size(8)

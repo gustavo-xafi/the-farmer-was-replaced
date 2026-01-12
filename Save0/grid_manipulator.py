@@ -12,6 +12,9 @@ def move_random():
 
 
 def move_and_update(way):
+    if way == None:
+        move_random()
+        return False
     if can_move(way) == True:
         return move(way)
     elif can_move(Variables.oposite[way]) == True:
@@ -36,6 +39,17 @@ def find_next_pos(pos, way):
     return None
 
 
+def stuck():
+    all_directions = []
+    for direction in Variables.directions:
+        if can_move(direction):
+            return False
+        else:
+            all_directions.append(can_move(direction))
+
+    return len(all_directions) == 4
+
+
 def where_can_i_go():
     Variables.walkable = set()
     for way in Variables.directions:
@@ -46,7 +60,9 @@ def where_can_i_go():
 
 def best_way(pos):
     measured = Variables.apple_pos
+    quick_print("measured cannot be none", measured)
     if measured == None:
+        helpers.update_apple_pos()
         return None
     tx, ty = measured
     x, y = pos
@@ -97,22 +113,24 @@ def dinossaur_hunter(came_from=Variables.came_from):
     if Variables.is_dinossaur_hat_on == False:
         change_hat(Hats.Dinosaur_Hat)
         Variables.is_dinossaur_hat_on = True
+        Variables.lost_counter = 0
 
-    if Variables.apple_pos == None:
+    if Variables.apple_pos == None and get_entity_type() == Entities.Apple:
         Variables.apple_pos = measure()
-    if Variables.collected == True and Variables.apple_pos != None:
-        Variables.collected = False
+        Variables.lost_counter += 1
 
     pos = (get_pos_x(), get_pos_y())
     update_walked_in(pos)
     where_i_go = Variables.walkable
-    move_and_update(best_way(pos))
+    walked = move_and_update(best_way(pos))
+    if stuck():
+        Variables.is_dinossaur_hat_on = False
+        change_hat(Hats.Brown_Hat)
+        Variables.apple_pos = None
+        Variables.lost_counter = 0
+
     quick_print(best_way(pos))
     helpers.dinossaur_harvest_and_till()
-
-
-def maze_lazy_walker():
-    maze_walker()
 
 
 def update_walked_in(pos):
